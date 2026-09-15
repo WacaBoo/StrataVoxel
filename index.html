@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#141a18"><meta name="description" content="An interactive procedural voxel world. Shape islands, mountains and underground caves directly in your browser.">
+  <title>StrataVoxel — World generator</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='%23bce784' d='M2 8 16 1 30 8 16 15z'/%3E%3Cpath fill='%23799657' d='M2 10 15 17v14L2 24z'/%3E%3Cpath fill='%23486639' d='m17 17 13-7v14l-13 7z'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a class="brand" href="./" aria-label="StrataVoxel home"><span class="brand-icon">▦</span> StrataVoxel<span class="version">/ 001</span></a><span class="header-note">PROCEDURAL WORLD LAB</span><span class="edition">INTERACTIVE PROTOTYPE</span></header>
+<main>
+  <aside>
+    <div class="intro"><span class="eyebrow">A WORLD FROM A NUMBER</span><h1>Small blocks.<br>Endless terrain.</h1><p>Find a seed. Change the landscape.<br>See what grows.</p></div>
+    <form id="settings">
+      <section><div class="section-title"><span>01 / WORLD</span><span>↘</span></div>
+        <label for="seed">World seed</label><div class="seed-row"><input id="seed" value="STRATA-0042" maxlength="64" spellcheck="false" autocomplete="off"><button type="button" id="random" aria-label="Randomize seed" title="Randomize seed">⚄</button></div>
+        <label class="mixed-toggle" for="mixed"><span>Mixed-biome world</span><input type="checkbox" id="mixed" checked></label>
+        <label for="preset">Single landscape</label><select id="preset" disabled><option value="islands">Emerald archipelago</option><option value="alpine">Alpine wilderness</option><option value="canyon">Canyon country</option></select>
+      </section>
+      <section><div class="section-title"><span>02 / SHAPE</span><span>↘</span></div>
+        <label for="relief">Elevation <output id="relief-value">55%</output></label><input id="relief" type="range" min="0" max="100" value="55" aria-describedby="relief-help"><p class="control-help" id="relief-help">Hills and mountain height.</p>
+        <label for="height">Height <output id="height-value">24</output></label><input id="height" type="range" min="8" max="96" value="24" aria-describedby="height-help"><p class="control-help" id="height-help">Base depth in voxels.</p>
+        <label for="dynamics">World dynamics <output id="dynamics-value">35%</output></label><input id="dynamics" type="range" min="0" max="100" value="35" aria-describedby="dynamics-help"><p class="control-help" id="dynamics-help">Gentle regions → rugged terrain.</p>
+        <label for="sea">Water level <output id="sea-value">13</output></label><input id="sea" type="range" min="5" max="24" value="13">
+        <label for="detail">World size</label><select id="detail"><option value="96">96 × 96</option><option value="128">128 × 128</option><option value="192">192 × 192</option><option value="384" selected>384 × 384</option><option value="640">640 × 640</option><option value="1280">1,280 × 1,280</option></select>
+      </section>
+      <section class="toggles"><label for="caves"><span>Cave systems</span><input type="checkbox" id="caves" checked></label><label for="cutaway"><span>Geological cutaway</span><input type="checkbox" id="cutaway"></label></section>
+      <button class="generate" type="submit"><span>GENERATE WORLD</span><span>↗</span></button>
+      <p class="hint">Same seed + settings. Same world.</p>
+    </form>
+    <div class="sidebar-foot"><span class="tiny-block"></span> BUILT BLOCK BY BLOCK</div>
+  </aside>
+  <div class="viewport" id="viewport">
+    <canvas id="world" tabindex="0" aria-label="Interactive voxel world. Drag to orbit, shift-drag to pan, scroll or plus and minus to zoom. Explore surface then click land for a ground-level view. WASD moves, Q and E change height, Escape returns to overview."></canvas>
+    <div class="world-caption"><span class="eyebrow">LIVE SPECIMEN / <span id="specimen">STRATA-0042</span></span><h2 id="world-name">A world of biomes</h2></div>
+    <div class="view-controls"><button id="explore" aria-pressed="false">Explore surface</button><button id="rotate" aria-pressed="false" title="Toggle automatic orbit">Auto orbit</button><button id="reset" title="Reset camera">Reset view ↺</button></div>
+    <div id="surface-move" hidden><button id="forward">↑ Forward</button><button id="backward">↓ Back</button></div>
+    <button id="cancel" hidden>Cancel generation</button>
+    <div id="status" class="status" role="status">Growing your world…</div>
+    <canvas class="compass" id="compass" width="112" height="112" role="img" aria-label="3D compass"></canvas>
+    <div class="legend"><span><i style="--swatch:#337e8a"></i>Water</span><span><i style="--swatch:#d4bf83"></i>Coast</span><span><i style="--swatch:#78a750"></i>Grassland</span><span><i style="--swatch:#365d40"></i>Forest</span><span><i style="--swatch:#8a9390"></i>Rock</span><span><i style="--swatch:#e2e9da"></i>Snow</span></div>
+    <div class="viewport-foot"><span id="camera-help">DRAG ORBIT · SHIFT-DRAG PAN · SCROLL ZOOM</span><span id="view-label">ORTHOGRAPHIC / 3D</span></div>
+  </div>
+</main>
+<footer><span><i class="live-dot"></i> LOCAL GENERATION <b>/</b> NO SERVER REQUIRED</span><div><span id="time">— ms</span><span id="faces">— quads</span><span id="voxels">— voxels</span><span id="mesh">— MB mesh</span><span>WEBGL</span></div></footer>
+<noscript>This world generator needs JavaScript enabled.</noscript>
+<script type="module" src="app.js"></script>
+</body></html>
