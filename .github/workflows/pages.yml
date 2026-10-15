@@ -1,0 +1,52 @@
+name: Verify and publish
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check application syntax
+        run: |
+          node --check app.js
+          node --check terrain-worker.js
+          node --check server.cjs
+      - name: Verify terrain and camera
+        run: npm test
+
+  deploy:
+    needs: verify
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - name: Prepare static site
+        run: |
+          mkdir _site
+          cp index.html style.css app.js camera.js terrain.js terrain-worker.js .nojekyll _site/
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - name: Publish site
+        id: deployment
+        uses: actions/deploy-pages@v4

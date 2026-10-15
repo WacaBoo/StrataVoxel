@@ -1,0 +1,15 @@
+{
+  "name": "stratavoxel",
+  "version": "1.0.0",
+  "private": true,
+  "description": "An interactive procedural voxel world generator.",
+  "type": "module",
+  "scripts": {
+    "start": "node server.cjs",
+    "test": "node verify.cjs",
+    "test:large": "node verify.cjs --large"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
